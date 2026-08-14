@@ -92,7 +92,7 @@ export function PetDockEntry(props: PetDockEntryProps): ReactElement {
       onClick={props.summon}
       data-testid="pet-summon"
     >
-      {props.t('pet.summon', { name: snapshot?.name ?? '深蓝' })}
+      {props.t('pet.summon', { name: snapshot?.name ?? '牢梁' })}
     </button>
   )
 }

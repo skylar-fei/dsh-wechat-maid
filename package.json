@@ -2,7 +2,7 @@
   "name": "dsh-wechat-maid",
   "version": "0.1.0",
   "private": true,
-  "description": "DSH Web 插件合集：微信机器人（连接 + 主动消息/定时推送）+ 深蓝女仆桌宠，两个插件共享构建预设的单仓库。",
+  "description": "DSH 插件合集：deepseek 娘桌宠 + 微信机器人（连接 + 主动消息/定时推送），让 DSH 拥有主动能力。",
   "packageManager": "pnpm@11.7.0",
   "engines": {
     "node": "^22.19.0 || >=24.0.0"

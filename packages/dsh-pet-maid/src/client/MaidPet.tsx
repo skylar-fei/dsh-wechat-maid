@@ -127,7 +127,7 @@ export function MaidPet(props: MaidPetProps): ReactPortal {
   const [chatBubble, setChatBubble] = useState<{ text: string; at: number } | null>(null)
   const lastActivityRef = useRef(Date.now())
   const animRef = useRef<PetAnimation>('idle')
-  const nameRef = useRef('深蓝')
+  const nameRef = useRef('牢梁')
   const chatTimerRef = useRef<number | undefined>(undefined)
   const hideTimerRef = useRef<number | undefined>(undefined)
   const sleepingRef = useRef(false)
@@ -181,7 +181,7 @@ export function MaidPet(props: MaidPetProps): ReactPortal {
     : (hostAnimation === 'idle' && sleeping ? 'sleeping' : hostAnimation)
   sleepingRef.current = sleeping
   animRef.current = animation
-  nameRef.current = snapshot?.name ?? '深蓝'
+  nameRef.current = snapshot?.name ?? '牢梁'
   const scaleRef = useRef(spriteScale)
   scaleRef.current = spriteScale
   useEffect(() => {
@@ -466,7 +466,7 @@ export function MaidPet(props: MaidPetProps): ReactPortal {
       {hovered && dragRef.current === null && !settingsOpen && (
         <div className={styles.panel}>
           <div className={styles.statsHeader}>
-            <span className={styles.statsTitle}>{snapshot?.name ?? '深蓝'} 的工作面板</span>
+            <span className={styles.statsTitle}>{snapshot?.name ?? '牢梁'} 的工作面板</span>
           </div>
           <div className={styles.statsGrid}>
             <div className={styles.statsCell}><span className={styles.statsLabel}>今日任务</span><span className={styles.statsValue}>{stats?.todayTurns ?? 0}</span></div>
@@ -501,7 +501,7 @@ export function MaidPet(props: MaidPetProps): ReactPortal {
             )) : <div className={styles.taskEmpty}>今天还没有执行任务</div>}
           </div>
           <div className={styles.rankRow}>
-            <span className={styles.nameCell}>{snapshot?.name ?? '深蓝'}</span>
+            <span className={styles.nameCell}>{snapshot?.name ?? '牢梁'}</span>
             <span>{props.t('pet.rank', { rank: snapshot?.affinity.rank ?? '?' })}</span>
           </div>
           <div className={styles.rankRow}>

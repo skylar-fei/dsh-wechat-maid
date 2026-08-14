@@ -39,8 +39,8 @@ describe('PetService enabled switch', () => {
       size: 160,
       right: 24,
       bottom: 20,
-      name: '  深蓝  ',
+      name: '  牢梁  ',
     })
-    expect(service.petName()).toBe('深蓝')
+    expect(service.petName()).toBe('牢梁')
   })
 })

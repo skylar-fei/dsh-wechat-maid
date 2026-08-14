@@ -1,7 +1,7 @@
 {
   "id": "maid",
-  "displayName": "深蓝",
-  "description": "一只深蓝发女仆，来自 DeepSeek 的陪伴小伙伴。",
+  "displayName": "牢梁",
+  "description": "一只可爱的 deepseek 娘桌宠，来自 DeepSeek 的陪伴小伙伴。",
   "spritesheetPath": "spritesheet.png",
   "frames": [
     6,

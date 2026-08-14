@@ -1,93 +1,80 @@
-# dsh-wechat-maid
+# dsh-wechat-maid · DSH 桌宠与微信主动消息
 
-![version](https://img.shields.io/badge/version-0.1.0-4f8ef7) ![license](https://img.shields.io/badge/license-BSD--3--Clause-9b59b6) ![platform](https://img.shields.io/badge/platform-DSH%20Web-00c2a8) ![language](https://img.shields.io/badge/language-TypeScript-3178c6)
+dsh-wechat-maid 是一套适用于 DeepSeek Harness（DSH）的插件合集。它提供一只可爱的 deepseek 娘桌宠，并把「主动消息 — 未来任务 — 连接个人微信」串成一条完整的主动能力链：让 DSH 拥有主动汇报的能力，让你能通过桌宠面板检视未来任务的正常运转，并额外收获一份情绪价值。
 
-> 一个仓库，两个插件，三个能力：**微信机器人**、**主动消息 / 定时推送**、**深蓝女仆桌宠**。
+![桌宠主界面](docs/screenshots/11-pet-new-chat.png)
 
-## 这是什么
+## 功能插件
 
-把三样东西放进同一个 GitHub 项目：
+### 桌宠（deepseek 娘）
 
-| 能力 | 插件 | 说明 |
-|---|---|---|
-| 微信 bot 连接 | [dsh-weixin](packages/dsh-weixin) | 微信个人号接入，走官方 ClawBot 接口；单聊双向对话，与 Web 共享同一 agent 会话与记忆 |
-| 主动消息 | [dsh-weixin](packages/dsh-weixin) | agent 工具 `weixin_send` 随时推送到微信；内置 cron 定时任务（存 `~/.dsh/dsh-weixin-tasks.json`），到点唤醒 agent 干活后把结果推到微信 |
-| 深蓝女仆桌宠 | [dsh-pet-maid](packages/dsh-pet-maid) | 跟随模型状态切换动画的治愈系桌宠，摸头 / 喂糖 / 亲密度 / 糖果经济 / 拖动 / 隐藏召唤 |
+一只常驻界面的 deepseek 娘桌宠，默认名「牢梁」（可在面板里改名）。它会跟随智能体的状态切换动画，点击可摸头互动、投喂糖果可提升亲密度，陪伴度从「初见」一路成长至「心灵之约」。
 
-三个能力本质是**两个插件**，它们已经在运行时联动起来，不是从零打通。
+- **状态动画**：模型状态 → 桌宠动画——`thinking/tool` 时工作、`waiting` 时等待、`done` 时跳跃庆祝、空闲 `idle` 时呼吸待机；
+- **摸头互动**：点击 → 气泡反馈 + 亲密度 +1（10s 冷却）；
+- **点击变体**：单击=被摸、双击=戳（惊讶）、三下=生气、四下以上=慌张，各有独立逐帧反应动画与气泡；
+- **睡眠 / 惊醒**：空闲 60 秒打盹，鼠标或键盘一动即惊醒；
+- **喂糖**：悬浮面板「喂糖」→ 消耗 1 颗糖果 + 亲密度 +5（30s 冷却）；
+- **糖果经济**：糖果库存上限 20，工作每 3 回合 +1 颗、每 30 分钟 +1 颗；
+- **亲密度**：每完成一个回合 +1，四级：初见 → 熟识 → 亲密 → 心灵之约（100 点封顶）；
+- **自定义命名 / 拖动 / 隐藏召唤**：改名、拖到任意位置、隐藏后输入框出现「召唤{名字}」按钮，全部持久化；
+- **状态气泡 / 主动搭话**：工作时显示当前状态短语，空闲时随机冒一句关怀（约 1.5–4 分钟一次）；
+- **工作面板**：今日 / 累计任务、模型、tokens、缓存命中率、今日总结。
 
-## 联动
+| 陪伴工作 | 互动面板 |
+| --- | --- |
+| ![桌宠陪伴](docs/screenshots/11-pet-new-chat.png) | ![桌宠面板](docs/screenshots/12-pet-panel.png) |
 
-两个插件通过 DSH 宿主运行时 + 共享 JSON 文件协作，互不 npm 依赖：
+### 微信机器人
 
-- `dsh-weixin` 用 `ctx.provide('weixin', { sendMessage, status })` 把主动消息能力暴露给兄弟插件。
-- `dsh-pet-maid` 的 **auto-coding 模式**每回合结束调 `ctx.weixin.sendMessage` 给微信发提醒（「模型已响应，请继续对话」）。
-- `dsh-pet-maid` 直接读 `dsh-weixin` 的定时任务文件 `~/.dsh/dsh-weixin-tasks.json`，在桌宠面板展示「即将执行 / 今日已执行」的定时任务。
+个人微信通过官方 ClawBot 接口接入。在微信里给机器人发消息即可与 DSH 智能体对话；微信与 Web 共享同一个 agent 会话与记忆（会话 id 固定为 `dsh-weixin-main`，也会出现在 Web 会话列表里）。侧边栏「微信」面板可查看状态、扫码登录、断开。
 
-```
-微信发消息 --> dsh-weixin bridge --> 共享 agent 会话 <-- Web GUI
-                    |                        |
-                    | ctx.provide('weixin')  | activity/status 事件
-                    v                        v
-             主动消息/定时任务            dsh-pet-maid 桌宠
-                    |                        |
-                    +------- 共享 JSON ------+  桌宠面板显示定时任务
-                                            +  auto-coding 每回合推微信
-```
+### 主动消息
 
-## 仓库结构
+agent 工具 `weixin_send` 让智能体随时把消息推到你的微信；内置 cron 定时任务（存于 `~/.dsh/dsh-weixin-tasks.json`），到点自动唤醒智能体干活，完成后把结果推到微信——DSH 由此获得主动能力。
 
-```
-dsh-wechat-maid/
-|-- packages/
-|   |-- dsh-weixin/       # 微信机器人 + 主动消息 + 定时任务
-|   |-- dsh-pet-maid/     # 深蓝女仆桌宠
-|-- shared/               # 共享构建预设（tsdown.client.ts + web-platform.ts）
-|-- pnpm-workspace.yaml
-|-- package.json
-|-- .npmrc                # 仅 scope 映射，token 放用户级 ~/.npmrc
-|-- LICENSE
-`-- README.md
-```
+### 未来任务面板
+
+桌宠的工作面板直接读取微信插件的定时任务文件，展示「即将执行 / 今日已执行」两组任务，让你一眼确认主动链路在正常运转，不必打开微信或后台日志。
+
+### 自动编码（Auto-coding）
+
+桌宠提供「自动编码」模式，让 vibe coding 更高效：当模型输出结果或向你提问时，自动发一条微信通知——你只需检查成果、再次发起任务，然后就能专心做自己的事，不必一直盯着屏幕等它跑完。
 
 ## 安装
 
-两个插件都通过官方插件机制挂载（`cordis.patch.yml` + profile 机制），不改 DSH 源码。
+DSH 插件通过 `dsh plugin` 命令安装进 **profile**（`dsh web` 对应 `web` profile）。
 
 ```sh
-git clone https://github.com/<you>/dsh-wechat-maid.git
+# 1. 克隆仓库
+git clone https://github.com/skylar-fei/dsh-wechat-maid.git
 cd dsh-wechat-maid
-pnpm install && pnpm -r build
 
+# 2. 安装依赖并构建
+pnpm install
+pnpm -r build
+
+# 3. 把两个插件链接进 web profile
 dsh plugin --profile web add link:$(pwd)/packages/dsh-weixin
 dsh plugin --profile web add link:$(pwd)/packages/dsh-pet-maid
+
+# 4. 重启 dsh web
 dsh web
 ```
 
-## 使用
+### 验证与卸载
 
-1. 侧边栏点「微信」，点「连接」，在运行 `dsh web` 的终端扫码完成登录。
-2. 在微信里给机器人发消息即可对话；agent 可在任意时刻用 `weixin_send` 主动推送。
-3. 桌宠出现在界面右下角，随模型状态切换动画；悬浮面板可摸头 / 喂糖 / 改名 / 查看工作面板与微信定时任务。
-4. 在桌宠面板或设置里打开 auto-coding，每回合结束自动给微信发提醒。
+安装成功后重启 `dsh web`：侧边栏出现「微信」入口、界面右下角出现桌宠即生效。卸载用 `dsh plugin --profile web remove ...` 后重启即可。
 
-## 限制
+## 来源与版权
 
-- 主动推送需最近约 24 小时内收到过至少一条微信消息（微信平台 context_token 限制）。
-- 首次连接需在运行 `dsh web` 的终端扫码（二维码不在网页内渲染）。
-- 定时主动消息依赖 `dsh web` 进程常驻。
-- 微信登录态、定时任务、桌宠数据都存在用户主目录（`~/.openclaw`、`~/.dsh`），不进本仓库。
+| 包 | 说明 | 版权 |
+| --- | --- | --- |
+| dsh-weixin | 微信个人号接入（官方 ClawBot 接口）+ 主动消息 / 定时任务 | BSD-3-Clause（skylar-fei） |
+| dsh-pet-maid | deepseek 娘桌宠 | BSD-3-Clause（skylar-fei） |
 
-## 开发
-
-```sh
-pnpm -r build       # 编译两个插件（node 半区 + 浏览器 bundle）
-pnpm -r test        # vitest 单元测试
-pnpm -r typecheck   # 类型检查
-```
+deepseek 娘形象来自 B 站 UP 主 [@ZipZipPipe](https://space.bilibili.com/)。
 
 ## License
 
 [BSD-3-Clause](LICENSE)
-
-素材说明：`dsh-pet-maid/assets/maid/spritesheet.png` 的角色底图由通义万相（qwen-image）生成后程序化合成，公开发布前请确认该素材的授权允许对外分发。

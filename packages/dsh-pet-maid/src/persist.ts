@@ -97,7 +97,7 @@ export function emptyStats(): PetStats {
 }
 
 /** Default pet name (used until the user renames the pet). */
-export const DEFAULT_PET_NAME = '深蓝'
+export const DEFAULT_PET_NAME = '牢梁'
 
 /** Name constraints. */
 export const PET_NAME_MAX_LENGTH = 20
