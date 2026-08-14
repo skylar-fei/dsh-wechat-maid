@@ -1,6 +1,6 @@
 {
   "name": "@deepseek-ai/dsh-pet-maid",
-  "description": "深蓝宠物插件 for the dsh web GUI: a soft healing maid companion that reacts to model activity (idle/waiting/thinking/tool/done), with petting/feeding interactions and an affinity score",
+  "description": "deepseek 娘桌宠插件 for the dsh web GUI: a cute desktop pet that reacts to model activity (idle/waiting/thinking/tool/done), with petting/feeding interactions and an affinity score",
   "version": "0.1.1",
   "private": true,
   "type": "module",

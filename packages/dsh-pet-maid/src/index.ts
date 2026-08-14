@@ -1,6 +1,6 @@
 /**
  * dsh-pet host half — mounts the pet service and its HTTP routes. The
- * browser half (the `./client` entry) renders the maid companion and
+ * browser half (the `./client` entry) renders the desk pet companion and
  * drives it through the same-origin `/api/pet-maid/*` JSON endpoints plus the
  * `/pet/maid/*` media route. Install via `dsh plugin --profile web add
  * link:<dsh-wechat-maid>/packages/dsh-pet-maid`; the cordis.patch.yml inserts this plugin row.

@@ -1,5 +1,5 @@
 /**
- * maid companion component — the browser half's centerpiece. Renders a
+ * pet companion component — the browser half's centerpiece. Renders a
  * fixed-position floating sprite (React portal onto document.body), plays
  * the spritesheet track matching the host animation snapshot, and exposes
  * the interaction surface: click to pet, hover panel with feed/hide, drag to

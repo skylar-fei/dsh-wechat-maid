@@ -2,8 +2,6 @@
 
 dsh-wechat-maid 是一套适用于 DeepSeek Harness（DSH）的插件合集。它提供一只可爱的 deepseek 娘桌宠，并把「主动消息 — 未来任务 — 连接个人微信」串成一条完整的主动能力链：让 DSH 拥有主动汇报的能力，让你能通过桌宠面板检视未来任务的正常运转，并额外收获一份情绪价值。
 
-![桌宠主界面](docs/screenshots/11-pet-new-chat.png)
-
 ## 功能插件
 
 ### 桌宠（deepseek 娘）
@@ -20,10 +18,6 @@ dsh-wechat-maid 是一套适用于 DeepSeek Harness（DSH）的插件合集。�
 - **自定义命名 / 拖动 / 隐藏召唤**：改名、拖到任意位置、隐藏后输入框出现「召唤{名字}」按钮，全部持久化；
 - **状态气泡 / 主动搭话**：工作时显示当前状态短语，空闲时随机冒一句关怀（约 1.5–4 分钟一次）；
 - **工作面板**：今日 / 累计任务、模型、tokens、缓存命中率、今日总结。
-
-| 陪伴工作 | 互动面板 |
-| --- | --- |
-| ![桌宠陪伴](docs/screenshots/11-pet-new-chat.png) | ![桌宠面板](docs/screenshots/12-pet-panel.png) |
 
 ### 微信机器人
 

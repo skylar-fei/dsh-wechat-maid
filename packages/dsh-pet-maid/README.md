@@ -1,26 +1,24 @@
-# dsh-pet-maid — 深蓝女仆宠物插件
+# dsh-pet-maid — deepseek 娘桌宠插件
 
 ![version](https://img.shields.io/badge/version-0.1.0-4f8ef7) ![license](https://img.shields.io/badge/license-BSD--3--Clause-9b59b6) ![platform](https://img.shields.io/badge/platform-DSH%20Web-00c2a8) ![language](https://img.shields.io/badge/language-TypeScript-3178c6)
 
-> 一只深蓝发女仆「深蓝」，陪你在 DeepSeek Harness 里工作。
+> 一只可爱的 deepseek 娘桌宠「牢梁」，陪你在 DeepSeek Harness 里工作。
 
 模型思考的时候你在等，她在动。她会跟着模型的工作状态切换动画——干活、等待、思考、庆祝完成；你还可以摸头、喂糖果，看着她从初见慢慢长成你的心灵之约。
-
-与姊妹插件 [dsh-pet](../dsh-pet)（鲸鱼娘）同构，可共存。两者默认都锚定视口右下角，同时开启时建议在设置里隐藏其一，或把其中一个拖到别处。
 
 ## 功能
 
 | 功能 | 说明 |
 |---|---|
-| 状态动画 | 模型状态 → 女仆动画：`thinking/tool → 工作`、`waiting → 等待`、`done → 跳跃庆祝`、空闲 `idle` 呼吸待机 |
-| 摸头互动 | 点击女仆 → 气泡反馈 + 亲密度 +1（10s 冷却） |
+| 状态动画 | 模型状态 → 桌宠动画：`thinking/tool → 工作`、`waiting → 等待`、`done → 跳跃庆祝`、空闲 `idle` 呼吸待机 |
+| 摸头互动 | 点击桌宠 → 气泡反馈 + 亲密度 +1（10s 冷却） |
 | 睡眠/惊醒 | 空闲 60 秒后打盹（闭眼呼吸），鼠标/键盘一动即惊醒 |
 | 点击变体 | 单击=被摸、双击=戳（惊讶）、三下=生气、四下以上=甩手（慌张），各有独立逐帧反应动画与气泡 |
 | 喂糖 | 悬浮面板「喂糖」→ 消耗 1 颗糖果 + 亲密度 +5（30s 冷却） |
-| 糖果经济 | 糖果库存（上限 20）：工作每 3 回合 +1 颗、每 30 分钟 +1 颗；库存不足会提示「多陪深蓝工作一会儿」 |
+| 糖果经济 | 糖果库存（上限 20）：工作每 3 回合 +1 颗、每 30 分钟 +1 颗；库存不足会提示「多陪牢梁工作一会儿」 |
 | 亲密度 | 每完成一个回合 +1；4 个等级：初见 → 熟识 → 亲密 → 心灵之约（100 点封顶） |
 | 自定义命名 | 悬浮面板「改名」→ 1–20 字符，持久化，召唤按钮/面板同步显示 |
-| 拖动 | 按住女仆拖动重新摆放，位置持久化 |
+| 拖动 | 按住桌宠拖动重新摆放，位置持久化 |
 | 隐藏/召唤 | 悬浮面板「隐藏」；隐藏后输入选择行出现「召唤{名字}」按钮 |
 | 状态气泡 | 工作时显示模型当前状态短语 |
 | 主动搭话 | 空闲时随机冒一句关怀/提示（约 1.5–4 分钟一次） |
@@ -28,9 +26,9 @@
 
 ## 素材
 
-素材为 8 列 × 14 行图集（384×416 单元，3072×4160，透明背景，2 倍高清）。每行动作由通义万相生成 4 帧连续动画条（sprite strip）后抠图切片，呼吸/挥手/等待/复盘/睡眠用正反来回（ping-pong）补成 6 帧更顺滑。角色底图由通义万相（qwen-image-3.0-pro）生成，经绿幕抠图 + 去绿边后，程序化合成 9 态动画帧（呼吸 / 奔跑左右 / 挥手 / 跳跃 / 失败 / 等待 / 奔跑 / 复盘）。每行实际帧数与节奏在 `src/client/spritesheet.ts` 的 `TRACKS` 中定义，行序契约：0 idle / 1 running-right / 2 running-left / 3 waving / 4 jumping / 5 failed / 6 waiting / 7 running / 8 review。
+素材为 8 列 × 14 行图集（384×416 单元，3072×4160，透明背景，2 倍高清），程序化合成 9 态动画帧（呼吸 / 奔跑左右 / 挥手 / 跳跃 / 失败 / 等待 / 奔跑 / 复盘），呼吸/挥手/等待/复盘/睡眠用正反来回（ping-pong）补成 6 帧更顺滑。每行实际帧数与节奏在 `src/client/spritesheet.ts` 的 `TRACKS` 中定义，行序契约：0 idle / 1 running-right / 2 running-left / 3 waving / 4 jumping / 5 failed / 6 waiting / 7 running / 8 review。
 
-角色设计：深蓝（海军蓝）中长双马尾（发尾卷曲）+ 蓝色蝴蝶结、白色蕾丝女仆发带、头顶呆毛、圆形刘海；圆脸、大圆蓝眼 + 粉色腮红；深蓝女仆裙 + 白色泡泡袖、白色围裙（中央蓝色鲸鱼图案）、蓝色领结、深蓝过膝长袜、黑色圆头小皮鞋。
+角色形象为 deepseek 娘，来自 B 站 UP 主 @ZipZipPipe。
 
 ## 架构
 
@@ -50,7 +48,7 @@ dsh-pet-maid/
 |       |-- MaidPet.tsx       # 浮层组件（portal + rAF 帧动画 + 拖动）
 |       |-- spritesheet.ts    # 图集几何 + 每状态动画轨道（帧/时长）
 |       `-- pet.module.css
-|-- assets/maid/        # 女仆素材（pet.json + spritesheet.png）
+|-- assets/maid/        # 桌宠素材（pet.json + spritesheet.png）
 `-- cordis.patch.yml    # bundle patch：插入 pet-maid 插件行
 ```
 
@@ -78,7 +76,7 @@ pnpm install && pnpm -r build
 dsh plugin --profile web add link:$(pwd)/packages/dsh-pet-maid
 ```
 
-安装后**重启 `dsh web`**，女仆出现在界面右下角即生效。link 模式下改代码后重新 `pnpm build` 并刷新页面即可，无需重装。
+安装后**重启 `dsh web`**，桌宠出现在界面右下角即生效。link 模式下改代码后重新 `pnpm build` 并刷新页面即可，无需重装。
 
 ## 开发
 
