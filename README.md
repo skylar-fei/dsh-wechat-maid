@@ -2,6 +2,8 @@
 
 dsh-wechat-maid 是一套适用于 DeepSeek Harness（DSH）的插件合集。它提供一只可爱的 deepseek 娘桌宠，并把「主动消息 — 未来任务 — 连接个人微信」串成一条完整的主动能力链：让 DSH 拥有主动汇报的能力，让你能通过桌宠面板检视未来任务的正常运转，并额外收获一份情绪价值。
 
+![整体界面](docs/screenshots/整体界面.png)
+
 ## 功能插件
 
 ### 桌宠（deepseek 娘）
@@ -18,6 +20,8 @@ dsh-wechat-maid 是一套适用于 DeepSeek Harness（DSH）的插件合集。�
 - **自定义命名 / 拖动 / 隐藏召唤**：改名、拖到任意位置、隐藏后输入框出现「召唤{名字}」按钮，全部持久化；
 - **状态气泡 / 主动搭话**：工作时显示当前状态短语，空闲时随机冒一句关怀（约 1.5–4 分钟一次）；
 - **工作面板**：今日 / 累计任务、模型、tokens、缓存命中率、今日总结。
+
+![桌宠面板](docs/screenshots/桌宠面板.png)
 
 ### 微信机器人
 
@@ -62,15 +66,9 @@ dsh web
 
 安装成功后重启 `dsh web`：侧边栏出现「微信」入口、界面右下角出现桌宠即生效。卸载用 `dsh plugin --profile web remove ...` 后重启即可。
 
-## 截图
+装好后，两个插件的配置项统一收在「设置 → 插件配置」里：
 
-| 截图 1 | 截图 2 |
-| --- | --- |
-| ![截图 1](docs/screenshots/shot-1.png) | ![截图 2](docs/screenshots/shot-2.png) |
-
-| 截图 3 |
-| --- |
-| ![截图 3](docs/screenshots/shot-3.png) |
+![插件配置界面](docs/screenshots/插件配置界面.png)
 
 ## 来源与版权
 
@@ -79,7 +77,7 @@ dsh web
 | dsh-weixin | 微信个人号接入（官方 ClawBot 接口）+ 主动消息 / 定时任务 | BSD-3-Clause（skylar-fei） |
 | dsh-pet-maid | deepseek 娘桌宠 | BSD-3-Clause（skylar-fei） |
 
-deepseek 娘形象来自 B 站 UP 主 [@ZipZipPipe](https://space.bilibili.com/)。
+deepseek 娘形象来自 B 站 UP 主 @ZipZipPipe。
 
 ## License
 
