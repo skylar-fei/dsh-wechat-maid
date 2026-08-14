@@ -1,4 +1,4 @@
-# dsh-wechat-maid · DSH 桌宠与微信主动消息
+# dsh-wechat-maid · DSH 桌宠与主动功能
 
 dsh-wechat-maid 是一套适用于 DeepSeek Harness（DSH）的插件合集。它提供一只可爱的 deepseek 娘桌宠，并把「主动消息 — 未来任务 — 连接个人微信」串成一条完整的主动能力链：让 DSH 拥有主动汇报的能力，让你能通过桌宠面板检视未来任务的正常运转，并额外收获一份情绪价值。
 
@@ -61,6 +61,16 @@ dsh web
 ### 验证与卸载
 
 安装成功后重启 `dsh web`：侧边栏出现「微信」入口、界面右下角出现桌宠即生效。卸载用 `dsh plugin --profile web remove ...` 后重启即可。
+
+## 截图
+
+| 截图 1 | 截图 2 |
+| --- | --- |
+| ![截图 1](docs/screenshots/shot-1.png) | ![截图 2](docs/screenshots/shot-2.png) |
+
+| 截图 3 |
+| --- |
+| ![截图 3](docs/screenshots/shot-3.png) |
 
 ## 来源与版权
 
