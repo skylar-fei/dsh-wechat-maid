@@ -16,9 +16,12 @@
 
 ## 安装
 
-与其他 dsh-web-ui 插件一致，link: 安装后重启 dsh web：
+与其他 dsh 插件一致，通过 link: 安装后重启 dsh web：
 
 ```sh
+git clone https://github.com/skylar-fei/dsh-wechat-maid.git
+cd dsh-wechat-maid
+pnpm install && pnpm -r build
 dsh plugin --profile web add link:$(pwd)/packages/dsh-weixin
 dsh web
 ```

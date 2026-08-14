@@ -3,7 +3,7 @@
  * browser half (the `./client` entry) renders the maid companion and
  * drives it through the same-origin `/api/pet-maid/*` JSON endpoints plus the
  * `/pet/maid/*` media route. Install via `dsh plugin --profile web add
- * link:<dsh-web-ui>/packages/dsh-pet-maid`; the cordis.patch.yml inserts this plugin row.
+ * link:<dsh-wechat-maid>/packages/dsh-pet-maid`; the cordis.patch.yml inserts this plugin row.
  * @module @deepseek-ai/dsh-pet-maid
  */
 

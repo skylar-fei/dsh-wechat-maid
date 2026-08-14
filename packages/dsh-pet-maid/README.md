@@ -72,8 +72,8 @@ shell.overlay 槽位  <-- 轮询 800ms -- pet-maid client（浏览器）
 ## 安装
 
 ```sh
-git clone https://github.com/zhu1090093659/dsh-web-ui.git
-cd dsh-web-ui
+git clone https://github.com/skylar-fei/dsh-wechat-maid.git
+cd dsh-wechat-maid
 pnpm install && pnpm -r build
 dsh plugin --profile web add link:$(pwd)/packages/dsh-pet-maid
 ```
