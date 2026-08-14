@@ -1,0 +1,22 @@
+{
+  "id": "maid",
+  "displayName": "深蓝",
+  "description": "一只深蓝发女仆，来自 DeepSeek 的陪伴小伙伴。",
+  "spritesheetPath": "spritesheet.png",
+  "frames": [
+    6,
+    4,
+    4,
+    6,
+    4,
+    4,
+    6,
+    4,
+    6,
+    6,
+    6,
+    4,
+    6,
+    4
+  ]
+}

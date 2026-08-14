@@ -1,0 +1,200 @@
+/* Colors ride the dsh --dsw-* tokens so the card follows the active skin. */
+.card {
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.description {
+  opacity: 0.7;
+  font-size: 12px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty {
+  opacity: 0.6;
+  font-size: 12px;
+  margin: 0;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task {
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.taskMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.taskMain:hover .taskTitle {
+  text-decoration: underline;
+}
+
+.taskTop {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.taskTitle {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.taskTime {
+  font-size: 12px;
+  color: var(--dsw-alias-label-secondary);
+  white-space: nowrap;
+}
+
+.taskLast {
+  font-size: 11px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.taskLast[data-result='ok'] {
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.taskLast[data-result='error'] {
+  color: #f85149;
+}
+
+.switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--dsw-alias-interactive-bg-hover);
+  cursor: pointer;
+  padding: 0;
+  flex: none;
+}
+
+.switch[data-on='true'] {
+  background: var(--dsw-alias-state-business-primary);
+}
+
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dsw-alias-label-primary);
+  transition: transform 0.12s ease;
+}
+
+.switch[data-on='true'] .knob {
+  transform: translateX(18px);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 120px;
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.textarea:focus {
+  outline: 1px solid var(--dsw-alias-state-business-primary);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--dsw-alias-state-business-primary);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.buttonGhost {
+  padding: 5px 12px;
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.buttonGhost:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}

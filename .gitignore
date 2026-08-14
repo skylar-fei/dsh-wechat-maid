@@ -1,0 +1,14 @@
+node_modules/
+lib/
+*.tsbuildinfo
+.DS_Store
+
+# runtime data / credentials (normally under ~/.dsh and ~/.openclaw, never in repo)
+.dsh/
+.openclaw/
+
+# env and secrets
+.env
+.env.*
+!.env.example
+*.local

@@ -1,0 +1,164 @@
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.entry:hover {
+  background: rgba(127, 127, 127, 0.12);
+}
+
+.entry[data-active='true'] {
+  background: rgba(127, 127, 127, 0.2);
+}
+
+.entryIcon {
+  display: inline-flex;
+  flex: none;
+}
+
+.entryIcon svg {
+  display: block;
+}
+
+.entryLabel {
+  white-space: nowrap;
+}
+
+.view {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.panel {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  max-width: 90vw;
+  height: 100%;
+  border-left: 1px solid rgba(127, 127, 127, 0.25);
+  background: var(--dsh-bg, #1e1e1e);
+  color: var(--dsh-fg, #e6e6e6);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(127, 127, 127, 0.2);
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.iconButton {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.iconButton:hover {
+  background: rgba(127, 127, 127, 0.15);
+}
+
+.panelContent {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusLabel {
+  opacity: 0.7;
+  min-width: 48px;
+}
+
+.statusValue {
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.statusBadge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(127, 127, 127, 0.18);
+}
+
+.statusBadge[data-state='connected'] {
+  background: rgba(46, 160, 67, 0.25);
+}
+
+.statusBadge[data-state='connecting'] {
+  background: rgba(210, 153, 34, 0.25);
+}
+
+.statusBadge[data-state='error'] {
+  background: rgba(248, 81, 73, 0.25);
+}
+
+.statusError {
+  color: #f85149;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.hint {
+  opacity: 0.75;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.button {
+  padding: 6px 14px;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.button:hover:not(:disabled) {
+  background: rgba(127, 127, 127, 0.12);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
