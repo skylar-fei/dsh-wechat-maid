@@ -26,7 +26,7 @@ import { weixinSendTool, weixinStatusTool } from './tools.ts'
 export const name = 'weixin'
 
 /** Services required before the Weixin surfaces can mount. */
-export const inject = ['webServer', 'tools', 'systemPrompt', 'agents', 'agentDefaultModel', 'workspaceRegistry']
+export const inject = ['webServer', 'tools', 'systemPrompt', 'agents', 'agentDefaultModel', 'agentPresets', 'workspaceRegistry']
 
 /** Settings namespace of the Weixin capability. */
 export const WEIXIN_SETTINGS_NAMESPACE = settingsNamespace('dsh-weixin')

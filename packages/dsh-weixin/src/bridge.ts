@@ -5,14 +5,15 @@
  * appears in the web session list, so WeChat and the web GUI share one agent
  * and one memory.
  *
- * Agent creation mirrors dsh-headless: it reads the deployment default model
- * (ctx.agentDefaultModel), applies the plugin's optional provider/model
- * override, and installs the model selection in the agent's scoped setup so
- * prompt variables ({{model}}) resolve and requests route to the right model.
+ * Agent creation composes the deployment's default preset (full tool set:
+ * pwsh, web_search, read, write, ...), then installs the model selection on
+ * top. Scheduled tasks are serialized so two tasks firing close together never
+ * interleave their turns in the shared session.
  */
 
 import { installModelSelection, type Agent as DshAgent, type AgentHandle, type ModelSelection } from '@deepseek-ai/dsh-agent'
 import type {} from '@deepseek-ai/dsh-agent-default-model'
+import type {} from '@deepseek-ai/dsh-agent-presets'
 import type { Context } from '@deepseek-ai/cordis'
 import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import { SessionId, type SessionEvent } from '@deepseek-ai/dsh-session'
@@ -39,17 +40,27 @@ export function resolveModelSelection(config: WeixinBridgeConfig, defaults: Mode
   return result
 }
 
-/** Walk the events after a baseline to summarize one turn's outcome. */
+/** Extract the text of one content block list. */
+function textOf(content: readonly { type: string; text?: string }[]): string {
+  return content.filter((block) => block.type === 'text').map((block) => block.text ?? '').join('')
+}
+
+/**
+ * Walk the events after a baseline to summarize one turn's outcome.
+ *
+ * The authoritative failure signals are a turn-level error and a failed
+ * weixin_send call (the notification the task is supposed to deliver). Text
+ * heuristics are avoided: a successful reply can legitimately mention 失败 /
+ * 没有 in passing.
+ */
 export function extractTurnOutcome(events: readonly SessionEvent[], baseline: number): { ok: boolean; summary: string } {
   let ok = true
   let summary = ''
+  const weixinSendCallIds = new Set<string>()
   for (let i = baseline; i < events.length; i++) {
     const event = events[i]
     if (event.type === 'assistant/message') {
-      const text = event.data.message.content
-        .filter((block): block is { type: 'text'; text: string } => block.type === 'text')
-        .map((block) => (block as { text: string }).text)
-        .join('')
+      const text = textOf(event.data.message.content as { type: string; text?: string }[])
       if (text !== '') summary = text
     }
     if (event.type === 'turn/end') {
@@ -60,6 +71,18 @@ export function extractTurnOutcome(events: readonly SessionEvent[], baseline: nu
         summary = failure?.message ?? '执行出错'
       }
     }
+    if (event.type === 'tool/call' && event.data.name === 'weixin_send') {
+      weixinSendCallIds.add(event.data.callId)
+    }
+  }
+  // A weixin_send that failed means the notification never reached the user.
+  for (let i = baseline; i < events.length; i++) {
+    const event = events[i]
+    if (event.type !== 'tool/result') continue
+    const source = event.data.message.source as { callId?: string } | undefined
+    if (source?.callId === undefined || !weixinSendCallIds.has(source.callId)) continue
+    const text = textOf(event.data.message.content as { type: string; text?: string }[])
+    if (text.includes('发送失败')) ok = false
   }
   if (summary.length > 120) summary = summary.slice(0, 120) + '…'
   if (summary === '') summary = ok ? '完成' : '未知错误'
@@ -71,10 +94,7 @@ export function extractLatestAssistantText(events: readonly SessionEvent[], base
   for (let i = events.length - 1; i >= baseline; i--) {
     const event = events[i]
     if (event.type === 'assistant/message') {
-      const text = event.data.message.content
-        .filter((block): block is { type: 'text'; text: string } => block.type === 'text')
-        .map((block) => (block as { text: string }).text)
-        .join('')
+      const text = textOf(event.data.message.content as { type: string; text?: string }[])
       if (text !== '') return text
     }
   }
@@ -85,6 +105,7 @@ export function extractLatestAssistantText(events: readonly SessionEvent[], base
 export class WeixinBridge implements WeixinAgent {
   private handle: AgentHandle | undefined
   private pending: Promise<DshAgent> | undefined
+  private taskChain: Promise<unknown> = Promise.resolve()
 
   constructor(
     private readonly ctx: Context,
@@ -97,7 +118,7 @@ export class WeixinBridge implements WeixinAgent {
       const workspace = this.ctx.workspaceRegistry.list()[0]
       if (workspace !== undefined) return workspace.path
     } catch {
-      // workspaceRegistry unavailable — fall through
+      // workspaceRegistry unavailable - fall through
     }
     return process.cwd()
   }
@@ -119,7 +140,11 @@ export class WeixinBridge implements WeixinAgent {
           provider: selection.provider,
           model: selection.model,
         }
-        const setup = (agentCtx: Context) => {
+        // Compose the agent from the deployment's default preset so it carries
+        // the full tool set (pwsh, web_search, read, write, ...).
+        const preset = await this.ctx.agentPresets.resolve()
+        const setup = async (agentCtx: Context): Promise<void> => {
+          await this.ctx.agentPresets.mount(agentCtx, preset.id)
           installModelSelection(agentCtx, {
             current: selection,
             assembled: undefined,
@@ -128,19 +153,15 @@ export class WeixinBridge implements WeixinAgent {
 
         let handle: AgentHandle
         try {
-          // Resume the persisted shared session when it already exists (the
-          // fixed id keeps WeChat and the web GUI on one session across restarts).
           handle = await this.ctx.agents.resume({
             resumeSessionId: SessionId(WEIXIN_SESSION_ID),
             agentOptions,
             setup,
           })
         } catch {
-          // First run (no persisted session): create it fresh with the
-          // resolved workspace cwd so the {{cwd}} prompt variable resolves.
           handle = await this.ctx.agents.create({
             sessionId: SessionId(WEIXIN_SESSION_ID),
-            meta: { cwd: this.resolveCwd() },
+            meta: { cwd: this.resolveCwd(), agentPreset: preset.id },
             agentOptions,
             setup,
           })
@@ -179,8 +200,14 @@ export class WeixinBridge implements WeixinAgent {
     })
   }
 
-  /** Drive the shared agent with a scheduled-task prompt, returning the run outcome. */
+  /** Drive the shared agent with a scheduled-task prompt, serialized so tasks never interleave. */
   async runPrompt(prompt: string): Promise<{ ok: boolean; summary: string }> {
+    const run = this.taskChain.then(() => this.doRunPrompt(prompt))
+    this.taskChain = run.catch(() => {})
+    return run
+  }
+
+  private async doRunPrompt(prompt: string): Promise<{ ok: boolean; summary: string }> {
     const agent = await this.ensureAgent()
     const baseline = agent.session.seq
     agent.followup(createUserMessage({

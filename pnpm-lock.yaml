@@ -115,6 +115,9 @@ importers:
       '@deepseek-ai/dsh-agent-default-model':
         specifier: ^0.1.0-rc.6
         version: 0.1.0-rc.6(8bffb997b64260f42aff4629c695b626)
+      '@deepseek-ai/dsh-agent-presets':
+        specifier: ^0.1.0-rc.6
+        version: 0.1.0-rc.6(4c20af7d23bdb1bbe92fd5e1e7ddef5d)
       '@deepseek-ai/dsh-client-connection':
         specifier: ^0.1.0-rc.6
         version: 0.1.0-rc.6(4d97f918f32bf0a0e5cc153682aa7b50)
